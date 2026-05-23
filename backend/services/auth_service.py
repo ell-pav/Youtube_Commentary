@@ -1,59 +1,43 @@
-from datetime import datetime, timedelta
-from jose import jwt
-from passlib.context import CryptContext
-from dotenv import load_dotenv
-
 import os
+from jose import jwt
 
-load_dotenv()
-
-SECRET_KEY = os.getenv("SECRET_KEY")
-
-ALGORITHM = "HS256"
-
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
-
-
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto"
+from datetime import (
+    datetime,
+    timedelta,
+    UTC
 )
 
 
-fake_user = {
-    "username": os.getenv("ADMIN_USERNAME"),
-    "password": pwd_context.hash(os.getenv("ADMIN_PASSWORD"))
-}
+SECRET_KEY = os.getenv(
+    "SECRET_KEY"
+)
+
+ALGORITHM = os.getenv(
+    "ALGORITHM"
+)
+
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
-def verify_password(
-    plain_password,
-    hashed_password
-):
+ADMIN_USERNAME = os.getenv(
+    "ADMIN_USERNAME"
+)
 
-    return pwd_context.verify(
-        plain_password,
-        hashed_password
-    )
+ADMIN_PASSWORD = os.getenv(
+    "ADMIN_PASSWORD"
+)
 
 
 def authenticate_user(
-    username,
-    password
+    username: str,
+    password: str
 ):
 
-    if username != fake_user["username"]:
-
-        return False
-
-    if not verify_password(
-        password,
-        fake_user["password"]
-    ):
-
-        return False
-
-    return True
+    return (
+        username == ADMIN_USERNAME
+        and
+        password == ADMIN_PASSWORD
+    )
 
 
 def create_access_token(
@@ -62,13 +46,17 @@ def create_access_token(
 
     to_encode = data.copy()
 
-    expire = datetime.utcnow() + timedelta(
+    expire = datetime.now(
+        UTC
+    ) + timedelta(
         minutes=ACCESS_TOKEN_EXPIRE_MINUTES
     )
 
-    to_encode.update({
-        "exp": expire
-    })
+    to_encode.update(
+        {
+            "exp": expire
+        }
+    )
 
     encoded_jwt = jwt.encode(
         to_encode,
