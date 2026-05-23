@@ -18,7 +18,12 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
-
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      ALGORITHM: ${{ secrets.ALGORITHM }}
+      
     steps:
 
       - name: Checkout repository
