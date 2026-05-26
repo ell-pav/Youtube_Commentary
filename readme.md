@@ -173,11 +173,11 @@ ollama serve
 Create a `.env` file:
 
 ```env
-SECRET_KEY=your_secret_key
-ALGORITHM=HS256
+SECRET_KEY=***
+ALGORITHM=***
 
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=admin123
+ADMIN_USERNAME=***
+ADMIN_PASSWORD=***
 ```
 
 ---
